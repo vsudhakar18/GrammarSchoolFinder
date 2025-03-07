@@ -4,11 +4,11 @@ import geopy.distance
 
 app = Flask(__name__)
 
-# Load the school data
-schools_df = pd.read_csv("data/grammar_schools.csv")
+def load_schools():
+    return pd.read_csv("data/grammar_schools.csv")
 
-def calculate_distance(lat1, lon1, lat2, lon2):
-    return round(geopy.distance.geodesic((lat1, lon1), (lat2, lon2)).km, 2)
+def get_distance(postcode, school_location):
+    return round(geopy.distance.geodesic(postcode, school_location).km, 2)
 
 @app.route('/')
 def index():
@@ -16,21 +16,23 @@ def index():
 
 @app.route('/search', methods=['POST'])
 def search():
-    user_postcode = request.form['postcode']
-    user_lat = float(request.form['latitude'])
-    user_lon = float(request.form['longitude'])
+    postcode = request.form['postcode']
+    schools = load_schools()
+    results = []
     
-    schools_df["Crow Distance"] = schools_df.apply(
-        lambda row: calculate_distance(user_lat, user_lon, row["Latitude"], row["Longitude"]), axis=1
-    )
+    for _, row in schools.iterrows():
+        distance = get_distance(postcode, row['Location'])
+        results.append({
+            "School Name": row['School Name'],
+            "Location": row['Location'],
+            "Crow Distance": distance,
+            "In Catchment": row['In Catchment'],
+            "Fully Selective": row['Fully Selective'],
+            "Website": row['Website']
+        })
     
-    valid_schools = schools_df.sort_values(by="Crow Distance")
-    
-    # Check if school has catchment rules or is fully selective
-    valid_schools["In Catchment"] = valid_schools["Catchment Rules"].apply(lambda x: "Yes" if x == "Yes" else "No")
-    valid_schools["Fully Selective"] = valid_schools["Fully Selective"].apply(lambda x: "Yes" if x == "Yes" else "No")
-    
-    return render_template('index.html', schools=valid_schools.to_dict(orient='records'))
+    results = sorted(results, key=lambda x: x['Crow Distance'])
+    return render_template('index.html', schools=results)
 
 if __name__ == '__main__':
     app.run(debug=True)
