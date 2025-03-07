@@ -1,25 +1,20 @@
-School Name,Postcode,Type,Website
-Tunbridge Wells Grammar School for Boys,TN4 9XB,Boys,https://www.twgsb.org.uk
-The Skinners' School,TN4 9PG,Boys,https://www.skinners-school.co.uk
-Colchester Royal Grammar School,CO3 3ND,Boys,https://www.crgs.co.uk
-Colchester County High School for Girls,CO4 3SQ,Girls,https://www.cchsg.com
-King Edward VI Grammar School (KEGS),CM1 3SX,Boys,https://www.kegs.org.uk
-Southend High School for Boys,SS0 0RG,Boys,https://www.shsb.org.uk
-Southend High School for Girls,SS2 4UZ,Girls,https://www.shsg.org
-Westcliff High School for Boys,SS0 0BP,Boys,https://www.whsb.essex.sch.uk
-Westcliff High School for Girls,SS0 0BS,Girls,https://www.whsg.info
-Bexley Grammar School,DA5 1NE,Co-ed,https://www.bexleygs.co.uk
-Beths Grammar School,DA5 1NE,Boys,https://www.beths.bexley.sch.uk
-Chislehurst and Sidcup Grammar School,DA15 9AG,Co-ed,https://www.csgrammar.com
-Townley Grammar School,DA6 7AB,Girls,https://www.townleygrammar.org.uk
-Dartford Grammar School,DA1 2HW,Boys,https://www.dartfordgrammarschool.org.uk
-Dartford Grammar School for Girls,DA1 2NT,Girls,https://www.dartfordgrammargirls.kent.sch.uk
-Wilmington Grammar School for Boys,DA2 7DA,Boys,https://www.wgsb.org.uk
-Wilmington Grammar School for Girls,DA2 7BB,Girls,https://www.gsgw.org.uk
-Rainham Mark Grammar School,ME8 7AJ,Co-ed,https://www.rainhammark.com
-Sir Joseph Williamson's Mathematical School,ME1 3EL,Boys,https://www.sjwms.org.uk
-Fort Pitt Grammar School,ME4 6TJ,Girls,https://www.fortpittgrammarschool.co.uk
-St. Olave's Grammar School,BR6 9SH,Boys,https://www.saintolaves.net
-Tiffin School,KT2 6RL,Boys,https://www.tiffinschool.co.uk
-Tiffin Girls' School,KT2 5PL,Girls,https://www.tiffingirls.org
-Wilson's School,SM6 9JW,Boys,https://www.wilsons.school
+School Name,Latitude,Longitude,Catchment Rules,Places Available (In Catchment),Places Available (Out Catchment),Cut-off Score (2023 In),Cut-off Score (2023 Out),Cut-off Score (2022 In),Cut-off Score (2022 Out),Fully Selective,Website
+Dartford Grammar School,51.4376,0.2235,Yes,90,60,345,370,340,365,No,https://www.dartfordgrammarschool.org.uk/
+Tonbridge Grammar School,51.1914,0.2763,Yes,100,30,342,368,338,362,No,https://www.tgs.kent.sch.uk/
+The Skinners' School,51.1388,0.2632,Yes,95,25,340,360,335,355,No,https://www.skinners-school.co.uk/
+Wilson's School,51.3421,-0.1323,No,0,186,NA,NA,NA,NA,Yes,https://www.wilsonsschool.sutton.sch.uk/
+Tiffin School,51.4124,-0.2831,No,0,180,NA,NA,NA,NA,Yes,https://www.tiffinschool.co.uk/
+St. Olave's Grammar School,51.3814,0.0918,Yes,100,20,355,375,350,370,No,https://www.saintolaves.net/
+Colchester Royal Grammar School,51.8892,0.8999,No,0,112,NA,NA,NA,NA,Yes,https://www.crgs.co.uk/
+King Edward VI Grammar School,51.7356,0.4745,No,0,150,NA,NA,NA,NA,Yes,https://www.kegs.org.uk/
+Southend High School for Boys,51.5464,0.7058,Yes,80,50,332,358,328,350,No,https://www.shsb.org.uk/
+Bexley Grammar School,51.4563,0.1180,Yes,150,30,320,345,315,340,No,https://www.bexleygs.co.uk/
+Chislehurst and Sidcup Grammar,51.4345,0.1002,Yes,120,40,322,347,318,343,No,https://www.csgrammar.com/
+Newstead Wood School,51.3742,0.0567,Yes,100,30,350,370,345,365,No,https://www.newsteadwood.co.uk/
+Beths Grammar School,51.4484,0.1482,Yes,120,40,325,350,320,345,No,https://www.beths.bexley.sch.uk/
+Gravesend Grammar School,51.4351,0.3732,Yes,110,35,328,355,324,350,No,https://www.gravesendgrammar.com/
+Medway Grammar School,51.3896,0.5156,Yes,90,30,330,360,326,355,No,https://www.medwaygrammarschool.co.uk/
+Wallington County Grammar School,51.3566,-0.1527,No,0,150,NA,NA,NA,NA,Yes,https://www.wcgs-sutton.co.uk/
+Queen Elizabeth's School,51.6407,-0.1945,No,0,180,NA,NA,NA,NA,Yes,https://www.qebarnet.co.uk/
+The Judd School,51.1915,0.2753,Yes,105,35,343,369,339,364,No,https://www.judd.online/
+Westcliff High School for Boys,51.5445,0.6754,Yes,85,55,330,357,325,352,No,https://www.whsb.essex.sch.uk/
