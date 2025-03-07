@@ -1,0 +1,20 @@
+School Name,Latitude,Longitude,Catchment Rules,Places Available (In Catchment),Places Available (Out Catchment),Cut-off Score (2023 In),Cut-off Score (2023 Out),Cut-off Score (2022 In),Cut-off Score (2022 Out),Fully Selective
+Dartford Grammar School,51.4376,0.2235,Yes,90,60,345,370,340,365,No
+Tonbridge Grammar School,51.1914,0.2763,Yes,100,30,342,368,338,362,No
+The Skinners' School,51.1388,0.2632,Yes,95,25,340,360,335,355,No
+Wilson's School,51.3421,-0.1323,No,0,186,NA,NA,NA,NA,Yes
+Tiffin School,51.4124,-0.2831,No,0,180,NA,NA,NA,NA,Yes
+St. Olave's Grammar School,51.3814,0.0918,Yes,100,20,355,375,350,370,No
+Colchester Royal Grammar School,51.8892,0.8999,No,0,112,NA,NA,NA,NA,Yes
+King Edward VI Grammar School,51.7356,0.4745,No,0,150,NA,NA,NA,NA,Yes
+Southend High School for Boys,51.5464,0.7058,Yes,80,50,332,358,328,350,No
+Bexley Grammar School,51.4563,0.1180,Yes,150,30,320,345,315,340,No
+Chislehurst and Sidcup Grammar,51.4345,0.1002,Yes,120,40,322,347,318,343,No
+Newstead Wood School,51.3742,0.0567,Yes,100,30,350,370,345,365,No
+Beths Grammar School,51.4484,0.1482,Yes,120,40,325,350,320,345,No
+Gravesend Grammar School,51.4351,0.3732,Yes,110,35,328,355,324,350,No
+Medway Grammar School,51.3896,0.5156,Yes,90,30,330,360,326,355,No
+Wallington County Grammar School,51.3566,-0.1527,No,0,150,NA,NA,NA,NA,Yes
+Queen Elizabeth's School,51.6407,-0.1945,No,0,180,NA,NA,NA,NA,Yes
+The Judd School,51.1915,0.2753,Yes,105,35,343,369,339,364,No
+Westcliff High School for Boys,51.5445,0.6754,Yes,85,55,330,357,325,352,No
