@@ -1,43 +1,36 @@
 from flask import Flask, render_template, request
 import pandas as pd
-from geopy.distance import geodesic
-from geopy.geocoders import Nominatim
+import geopy.distance
 
 app = Flask(__name__)
 
-def get_coordinates(postcode):
-    """Get latitude and longitude for a given postcode."""
-    geolocator = Nominatim(user_agent="geoapi")
-    location = geolocator.geocode(postcode)
-    if location:
-        return (location.latitude, location.longitude)
-    return None
+# Load the school data
+schools_df = pd.read_csv("grammar_schools_with_catchment.csv")
 
-def calculate_distances(user_postcode, schools_df):
-    """Calculate distances and return sorted school list."""
-    user_coords = get_coordinates(user_postcode)
-    if not user_coords:
-        return []
-    
-    schools_df['Distance'] = schools_df.apply(lambda row: geodesic(user_coords, (row['Latitude'], row['Longitude'])).miles, axis=1)
-    return schools_df.sort_values(by='Distance').to_dict(orient='records')
+def calculate_distance(lat1, lon1, lat2, lon2):
+    return round(geopy.distance.geodesic((lat1, lon1), (lat2, lon2)).km, 2)
 
-# Load updated school data
-schools_df = pd.read_csv("data/grammar_schools.csv")
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
-    results = []
-    error = None
+    return render_template('index.html')
+
+@app.route('/search', methods=['POST'])
+def search():
+    user_postcode = request.form['postcode']
+    user_lat = float(request.form['latitude'])
+    user_lon = float(request.form['longitude'])
     
-    if request.method == 'POST':
-        postcode = request.form.get('postcode', '').strip()
-        if postcode:
-            results = calculate_distances(postcode, schools_df)
-            if not results:
-                error = "Invalid postcode or no schools found."
+    schools_df["Crow Distance"] = schools_df.apply(
+        lambda row: calculate_distance(user_lat, user_lon, row["Latitude"], row["Longitude"]), axis=1
+    )
     
-    return render_template('index.html', results=results, error=error, disclaimer="Data sourced from various educational and governmental sources. Admission criteria and cut-off scores vary annually. Please refer to official school websites for the most accurate and up-to-date information.")
+    valid_schools = schools_df.sort_values(by="Crow Distance")
+    
+    # Check if school has catchment rules or is fully selective
+    valid_schools["In Catchment"] = valid_schools["Catchment Rules"].apply(lambda x: "Yes" if x == "Yes" else "No")
+    valid_schools["Fully Selective"] = valid_schools["Fully Selective"].apply(lambda x: "Yes" if x == "Yes" else "No")
+    
+    return render_template('index.html', schools=valid_schools.to_dict(orient='records'))
 
 if __name__ == '__main__':
     app.run(debug=True)
