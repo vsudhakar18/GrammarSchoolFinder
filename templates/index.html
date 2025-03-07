@@ -1,40 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar School Finder</title>
-</head>
-<body>
-    <h1>Grammar School Finder</h1>
-    <form action="/search" method="POST">
-        <label for="postcode">Enter Postcode:</label>
-        <input type="text" id="postcode" name="postcode" required>
-        <button type="submit">Search</button>
-    </form>
+from flask import Flask, render_template, request
+import pandas as pd
+import geopy.distance
+
+app = Flask(__name__)
+
+def load_schools():
+    return pd.read_csv("data/grammar_schools.csv")
+
+def get_distance(postcode, school_location):
+    return round(geopy.distance.geodesic(postcode, school_location).km, 2)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/search', methods=['POST'])
+def search():
+    postcode = request.form['postcode']
+    schools = load_schools()
+    results = []
     
-    {% if schools %}
-        <h2>Results:</h2>
-        <table border="1">
-            <tr>
-                <th>School Name</th>
-                <th>Location</th>
-                <th>Distance (km)</th>
-                <th>In Catchment</th>
-                <th>Fully Selective</th>
-                <th>Website</th>
-            </tr>
-            {% for school in schools %}
-            <tr>
-                <td>{{ school["School Name"] }}</td>
-                <td>{{ school["Location"] }}</td>
-                <td>{{ school["Crow Distance"] }}</td>
-                <td>{{ school["In Catchment"] }}</td>
-                <td>{{ school["Fully Selective"] }}</td>
-                <td><a href="{{ school["Website"] }}" target="_blank">Link</a></td>
-            </tr>
-            {% endfor %}
-        </table>
-    {% endif %}
-</body>
-</html>
+    for _, row in schools.iterrows():
+        distance = get_distance(postcode, row['Location'])
+        results.append({
+            "School Name": row['School Name'],
+            "Location": row['Location'],
+            "Crow Distance": distance,
+            "In Catchment": row['In Catchment'],
+            "Fully Selective": row['Fully Selective'],
+            "Website": row['Website']
+        })
+    
+    results = sorted(results, key=lambda x: x['Crow Distance'])
+    return render_template('index.html', schools=results)
+
+if __name__ == '__main__':
+    app.run(debug=True)
