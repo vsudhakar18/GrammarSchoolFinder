@@ -1,52 +1,21 @@
-from flask import Flask, render_template, request
+from flask import Flask, request, render_template
 import pandas as pd
-from geopy.distance import geodesic
-import requests
+import os
 
 app = Flask(__name__)
 
-# Load grammar schools data
-schools_df = pd.read_csv("grammar_schools.csv")
-
-# Function to get latitude & longitude of a postcode
-def get_lat_lon(postcode):
-    url = f"https://nominatim.openstreetmap.org/search?format=json&q={postcode}"
-    response = requests.get(url).json()
-    if response:
-        return float(response[0]['lat']), float(response[0]['lon'])
-    return None
+# Load grammar school data
+CSV_FILE = os.path.join(os.path.dirname(__file__), "grammar_schools.csv")
+schools_df = pd.read_csv(CSV_FILE)
 
 @app.route("/", methods=["GET", "POST"])
-def index():
-    results = None  # Set to None initially (fix for no input case)
-
+def home():
+    results = None
     if request.method == "POST":
-        postcode = request.form.get("postcode")
-        radius = request.form.get("radius")
-
-        if postcode and radius:  # Ensure both fields have input
-            radius = float(radius)
-            user_location = get_lat_lon(postcode)
-
-            if user_location:
-                user_lat, user_lon = user_location
-                results = []
-
-                for _, row in schools_df.iterrows():
-                    school_location = (row["Latitude"], row["Longitude"])
-                    distance = geodesic(user_location, school_location).miles
-
-                    if distance <= radius:
-                        results.append({
-                            "name": row["School Name"],
-                            "postcode": row["Postcode"],
-                            "distance": round(distance, 2),
-                            "type": row["Type"],
-                            "website": row["Website"]
-                        })
-
-                results.sort(key=lambda x: x["distance"])  # Sort by nearest school
-
+        postcode = request.form.get("postcode", "").strip().upper()
+        if postcode:
+            results = schools_df[schools_df["Postcode"].str.startswith(postcode[:4])]
+    
     return render_template("index.html", results=results)
 
 if __name__ == "__main__":
