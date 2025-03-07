@@ -1,35 +1,49 @@
-from flask import Flask, request
+from flask import Flask, render_template, request
 import pandas as pd
+from geopy.distance import geodesic
+import requests
 
 app = Flask(__name__)
 
-# Load grammar school data (Make sure grammar_schools.csv is in the same folder)
-df = pd.read_csv("grammar_schools.csv")
+# Load grammar schools data
+schools_df = pd.read_csv("grammar_schools.csv")
+
+# Function to get latitude & longitude of a postcode
+def get_lat_lon(postcode):
+    url = f"https://nominatim.openstreetmap.org/search?format=json&q={postcode}"
+    response = requests.get(url).json()
+    if response:
+        return float(response[0]['lat']), float(response[0]['lon'])
+    return None
 
 @app.route("/", methods=["GET", "POST"])
-def home():
+def index():
+    results = []
+    
     if request.method == "POST":
-        user_postcode = request.form.get("postcode", "").strip()
-        radius = request.form.get("radius", "10")  # Default radius to 10 miles
+        postcode = request.form.get("postcode")
+        radius = float(request.form.get("radius"))
 
-        # Filter the schools based on postcode (Dummy filtering logic for now)
-        schools = df[df["Postcode"].str.startswith(user_postcode[:4])]
+        user_location = get_lat_lon(postcode)
+        if user_location:
+            user_lat, user_lon = user_location
 
-        # Read index.html and insert school data dynamically
-        with open("index.html", "r") as f:
-            html_content = f.read()
+            for _, row in schools_df.iterrows():
+                school_location = (row["Latitude"], row["Longitude"])
+                distance = geodesic(user_location, school_location).miles
+                
+                if distance <= radius:
+                    results.append({
+                        "name": row["School Name"],
+                        "postcode": row["Postcode"],
+                        "distance": round(distance, 2),
+                        "type": row["Type"],
+                        "website": row["Website"]
+                    })
 
-        school_list = "<ul>"
-        for _, row in schools.iterrows():
-            school_list += f"<li>{row['School Name']} - {row['Postcode']}</li>"
-        school_list += "</ul>"
+            results.sort(key=lambda x: x["distance"])  # Sort by nearest school
 
-        html_content = html_content.replace("{{SCHOOL_LIST}}", school_list)
-
-        return html_content
-
-    # Serve the index.html page
-    return open("index.html").read()
+    return render_template("index.html", results=results)
 
 if __name__ == "__main__":
     app.run(debug=True)
