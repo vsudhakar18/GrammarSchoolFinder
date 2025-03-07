@@ -4,72 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Grammar School Finder</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            padding: 20px;
-            background-color: #f4f4f4;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-        }
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-    </style>
 </head>
 <body>
-    <h2>Grammar School Finder</h2>
-    <form method="POST">
+    <h1>Grammar School Finder</h1>
+    <form action="/search" method="POST">
         <label for="postcode">Enter Postcode:</label>
         <input type="text" id="postcode" name="postcode" required>
         <button type="submit">Search</button>
     </form>
     
     {% if schools %}
-    <h3>Results for {{ postcode }}</h3>
-    <table>
-        <tr>
-            <th>School Name</th>
-            <th>Distance (miles)</th>
-            <th>Catchment Rules</th>
-            <th>Places Available (In Catchment)</th>
-            <th>Places Available (Out Catchment)</th>
-            <th>Cut-off Score 2023 (In)</th>
-            <th>Cut-off Score 2023 (Out)</th>
-            <th>Cut-off Score 2022 (In)</th>
-            <th>Cut-off Score 2022 (Out)</th>
-            <th>Fully Selective</th>
-            <th>Website</th>
-        </tr>
-        {% for school in schools %}
-        <tr>
-            <td>{{ school.name }}</td>
-            <td>{{ school.distance }}</td>
-            <td>{{ school.catchment }}</td>
-            <td>{{ school.places_in }}</td>
-            <td>{{ school.places_out }}</td>
-            <td>{{ school.cutoff_2023_in }}</td>
-            <td>{{ school.cutoff_2023_out }}</td>
-            <td>{{ school.cutoff_2022_in }}</td>
-            <td>{{ school.cutoff_2022_out }}</td>
-            <td>{{ school.fully_selective }}</td>
-            <td><a href="{{ school.website }}" target="_blank">Visit</a></td>
-        </tr>
-        {% endfor %}
-    </table>
+        <h2>Results:</h2>
+        <table border="1">
+            <tr>
+                <th>School Name</th>
+                <th>Location</th>
+                <th>Distance (km)</th>
+                <th>In Catchment</th>
+                <th>Fully Selective</th>
+                <th>Website</th>
+            </tr>
+            {% for school in schools %}
+            <tr>
+                <td>{{ school["School Name"] }}</td>
+                <td>{{ school["Location"] }}</td>
+                <td>{{ school["Crow Distance"] }}</td>
+                <td>{{ school["In Catchment"] }}</td>
+                <td>{{ school["Fully Selective"] }}</td>
+                <td><a href="{{ school["Website"] }}" target="_blank">Link</a></td>
+            </tr>
+            {% endfor %}
+        </table>
     {% endif %}
 </body>
 </html>
