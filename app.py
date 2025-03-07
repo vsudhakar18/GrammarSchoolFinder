@@ -23,7 +23,7 @@ def calculate_distances(user_postcode, schools_df):
     return schools_df.sort_values(by='Distance').to_dict(orient='records')
 
 # Load updated school data
-schools_df = pd.read_csv("grammar_schools_with_catchment.csv")
+schools_df = pd.read_csv("data/grammar_schools.csv")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
