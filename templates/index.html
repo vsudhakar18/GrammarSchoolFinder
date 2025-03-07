@@ -2,24 +2,45 @@
 <html>
 <head>
     <title>Grammar School Finder</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        input { padding: 5px; margin: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 10px; text-align: left; }
+    </style>
 </head>
 <body>
-    <h2>Find Grammar Schools in Your Area</h2>
-    <form method="post">
+    <h1>Find Grammar Schools Near You</h1>
+    <form method="POST">
         <label for="postcode">Enter Postcode:</label>
-        <input type="text" id="postcode" name="postcode" required>
+        <input type="text" name="postcode" required>
         <button type="submit">Search</button>
     </form>
 
-    {% if results is not none %}
-        <h3>Results:</h3>
-        <ul>
-        {% for _, row in results.iterrows() %}
-            <li><strong>{{ row["School Name"] }}</strong> ({{ row["Gender"] }}) - 
-                <a href="{{ row["Website"] }}" target="_blank">Website</a>
-            </li>
-        {% endfor %}
-        </ul>
+    {% if explanation %}
+        <p><strong>Note:</strong> {{ explanation }}</p>
+    {% endif %}
+
+    {% if results %}
+        <h2>Results:</h2>
+        <table>
+            <tr>
+                <th>School Name</th>
+                <th>Location</th>
+                <th>Distance (km)</th>
+                <th>Type</th>
+                <th>Website</th>
+            </tr>
+            {% for school in results %}
+            <tr>
+                <td>{{ school['School Name'] }}</td>
+                <td>{{ school['Postcode'] }}</td>
+                <td>{{ school['Distance'] }}</td>
+                <td>{{ school['Type'] }}</td>
+                <td><a href="{{ school['Website'] }}" target="_blank">Website</a></td>
+            </tr>
+            {% endfor %}
+        </table>
     {% endif %}
 </body>
 </html>
