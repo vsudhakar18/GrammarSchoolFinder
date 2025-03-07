@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grammar School Finder</title>
+</head>
+<body>
+    <h2>Find Grammar Schools in Your Area</h2>
+    <form method="post">
+        <label for="postcode">Enter Postcode:</label>
+        <input type="text" id="postcode" name="postcode" required>
+        <button type="submit">Search</button>
+    </form>
+
+    {% if results is not none %}
+        <h3>Results:</h3>
+        <ul>
+        {% for _, row in results.iterrows() %}
+            <li><strong>{{ row["School Name"] }}</strong> ({{ row["Gender"] }}) - 
+                <a href="{{ row["Website"] }}" target="_blank">Website</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+</body>
+</html>
