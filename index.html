@@ -1,31 +1,35 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar School Catchment Finder</title>
+    <title>Grammar School Finder</title>
 </head>
 <body>
-    <h1>Find Grammar Schools in Your Catchment</h1>
-    <form method="POST">
-        <label for="postcode">Enter Your Postcode:</label>
-        <input type="text" id="postcode" name="postcode" required>
-        <label for="radius">Radius (miles):</label>
-        <input type="number" id="radius" name="radius" value="10" required>
-        <button type="submit">Find Schools</button>
+    <h1>Find Grammar Schools Near You</h1>
+    <form method="post">
+        <label for="postcode">Enter Postcode:</label>
+        <input type="text" name="postcode" required>
+        <label for="radius">Enter Radius (miles):</label>
+        <input type="number" name="radius" step="0.1" value="5" required>
+        <button type="submit">Search</button>
     </form>
 
-    {% if schools is not none %}
-        <h2>Results for {{ postcode }} (within {{ radius }} miles):</h2>
-        {% if schools %}
-            <ul>
-                {% for school in schools %}
-                    <li>{{ school.name }} - {{ school.postcode }} ({{ school.distance_miles }} miles away)</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No grammar schools found in the selected radius.</p>
-        {% endif %}
+    {% if results is not none and results|length > 0 %}
+    <h2>Results</h2>
+    <ul>
+        {% for school in results %}
+        <li>
+            <strong>{{ school.name }}</strong> ({{ school.type }}) <br>
+            Postcode: {{ school.postcode }} <br>
+            Distance: {{ school.distance }} miles <br>
+            <a href="http://{{ school.website }}" target="_blank">Visit Website</a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% elif results is not none %}
+    <p>No schools found within the given radius.</p>
     {% endif %}
 </body>
 </html>
