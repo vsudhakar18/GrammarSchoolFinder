@@ -9,90 +9,67 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             padding: 20px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 5px;
+            background-color: #f4f4f4;
         }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            background: white;
         }
         th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
         th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
     <h2>Grammar School Finder</h2>
-    <label for="postcode">Enter Postcode:</label>
-    <input type="text" id="postcode" placeholder="e.g., DA5 1NE">
-    <button onclick="findSchools()">Find Schools</button>
+    <form method="POST">
+        <label for="postcode">Enter Postcode:</label>
+        <input type="text" id="postcode" name="postcode" required>
+        <button type="submit">Search</button>
+    </form>
     
-    <table id="results" style="display:none;">
-        <thead>
-            <tr>
-                <th>School Name</th>
-                <th>Distance (miles)</th>
-                <th>Catchment Rules</th>
-                <th>Places Available (In Catchment)</th>
-                <th>Places Available (Out Catchment)</th>
-                <th>Cut-off Score (2023 In)</th>
-                <th>Cut-off Score (2023 Out)</th>
-                <th>Cut-off Score (2022 In)</th>
-                <th>Cut-off Score (2022 Out)</th>
-                <th>Fully Selective</th>
-            </tr>
-        </thead>
-        <tbody></tbody>
+    {% if schools %}
+    <h3>Results for {{ postcode }}</h3>
+    <table>
+        <tr>
+            <th>School Name</th>
+            <th>Distance (miles)</th>
+            <th>Catchment Rules</th>
+            <th>Places Available (In Catchment)</th>
+            <th>Places Available (Out Catchment)</th>
+            <th>Cut-off Score 2023 (In)</th>
+            <th>Cut-off Score 2023 (Out)</th>
+            <th>Cut-off Score 2022 (In)</th>
+            <th>Cut-off Score 2022 (Out)</th>
+            <th>Fully Selective</th>
+            <th>Website</th>
+        </tr>
+        {% for school in schools %}
+        <tr>
+            <td>{{ school.name }}</td>
+            <td>{{ school.distance }}</td>
+            <td>{{ school.catchment }}</td>
+            <td>{{ school.places_in }}</td>
+            <td>{{ school.places_out }}</td>
+            <td>{{ school.cutoff_2023_in }}</td>
+            <td>{{ school.cutoff_2023_out }}</td>
+            <td>{{ school.cutoff_2022_in }}</td>
+            <td>{{ school.cutoff_2022_out }}</td>
+            <td>{{ school.fully_selective }}</td>
+            <td><a href="{{ school.website }}" target="_blank">Visit</a></td>
+        </tr>
+        {% endfor %}
     </table>
-
-    <script>
-        function findSchools() {
-            let postcode = document.getElementById("postcode").value.trim();
-            if (!postcode) {
-                alert("Please enter a postcode");
-                return;
-            }
-            fetch(`/find_schools?postcode=${encodeURIComponent(postcode)}`)
-                .then(response => response.json())
-                .then(data => {
-                    let table = document.getElementById("results");
-                    let tbody = table.querySelector("tbody");
-                    tbody.innerHTML = "";
-                    
-                    if (data.length === 0) {
-                        alert("No schools found for this postcode.");
-                        table.style.display = "none";
-                        return;
-                    }
-                    
-                    data.forEach(school => {
-                        let row = tbody.insertRow();
-                        row.innerHTML = `
-                            <td>${school["School Name"]}</td>
-                            <td>${school["Distance (miles)"]}</td>
-                            <td>${school["Catchment Rules"]}</td>
-                            <td>${school["Places Available (In Catchment)"]}</td>
-                            <td>${school["Places Available (Out Catchment)"]}</td>
-                            <td>${school["Cut-off Score (2023 In)"]}</td>
-                            <td>${school["Cut-off Score (2023 Out)"]}</td>
-                            <td>${school["Cut-off Score (2022 In)"]}</td>
-                            <td>${school["Cut-off Score (2022 Out)"]}</td>
-                            <td>${school["Fully Selective"]}</td>
-                        `;
-                    });
-                    
-                    table.style.display = "table";
-                })
-                .catch(error => console.error("Error fetching school data:", error));
-        }
-    </script>
+    {% endif %}
 </body>
 </html>
