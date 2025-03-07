@@ -18,30 +18,34 @@ def get_lat_lon(postcode):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    results = []
-    
+    results = None  # Set to None initially (fix for no input case)
+
     if request.method == "POST":
         postcode = request.form.get("postcode")
-        radius = float(request.form.get("radius"))
+        radius = request.form.get("radius")
 
-        user_location = get_lat_lon(postcode)
-        if user_location:
-            user_lat, user_lon = user_location
+        if postcode and radius:  # Ensure both fields have input
+            radius = float(radius)
+            user_location = get_lat_lon(postcode)
 
-            for _, row in schools_df.iterrows():
-                school_location = (row["Latitude"], row["Longitude"])
-                distance = geodesic(user_location, school_location).miles
-                
-                if distance <= radius:
-                    results.append({
-                        "name": row["School Name"],
-                        "postcode": row["Postcode"],
-                        "distance": round(distance, 2),
-                        "type": row["Type"],
-                        "website": row["Website"]
-                    })
+            if user_location:
+                user_lat, user_lon = user_location
+                results = []
 
-            results.sort(key=lambda x: x["distance"])  # Sort by nearest school
+                for _, row in schools_df.iterrows():
+                    school_location = (row["Latitude"], row["Longitude"])
+                    distance = geodesic(user_location, school_location).miles
+
+                    if distance <= radius:
+                        results.append({
+                            "name": row["School Name"],
+                            "postcode": row["Postcode"],
+                            "distance": round(distance, 2),
+                            "type": row["Type"],
+                            "website": row["Website"]
+                        })
+
+                results.sort(key=lambda x: x["distance"])  # Sort by nearest school
 
     return render_template("index.html", results=results)
 
