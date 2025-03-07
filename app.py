@@ -5,7 +5,7 @@ import geopy.distance
 app = Flask(__name__)
 
 # Load the school data
-schools_df = pd.read_csv("grammar_schools_with_catchment.csv")
+schools_df = pd.read_csv("data/grammar_schools.csv")
 
 def calculate_distance(lat1, lon1, lat2, lon2):
     return round(geopy.distance.geodesic((lat1, lon1), (lat2, lon2)).km, 2)
