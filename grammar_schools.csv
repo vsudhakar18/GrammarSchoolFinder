@@ -1,11 +1,23 @@
-School Name,Postcode,Latitude,Longitude,Type,Website
-School A,DA1 1AA,51.1234,-0.2345,Grammar,www.schoolA.com
-School B,DA5 1NE,51.2345,-0.3456,Grammar,www.schoolB.com
-School C,DA6 1XZ,51.3456,-0.4567,Grammar,www.schoolC.com
-School D,DA7 4BC,51.4567,-0.5678,Grammar,www.schoolD.com
-School E,DA8 1YZ,51.5678,-0.6789,Grammar,www.schoolE.com
-School F,DA9 0AB,51.6789,-0.7890,Grammar,www.schoolF.com
-School G,DA10 1CD,51.7890,-0.8901,Grammar,www.schoolG.com
-School H,DA11 1EF,51.8901,-0.9012,Grammar,www.schoolH.com
-School I,DA12 2GH,51.9012,-0.0123,Grammar,www.schoolI.com
-School J,DA13 3IJ,52.0123,-0.1234,Grammar,www.schoolJ.com
+School Name,Postcode,Latitude,Longitude,Type,Gender,Website
+Bexley Grammar School,DA5 1NE,51.4426,0.1355,Grammar,Co-ed,https://www.bexleygs.co.uk/
+Beths Grammar School,DA6 7DA,51.4601,0.1438,Grammar,Boys,https://www.beths.bexley.sch.uk/
+Chislehurst & Sidcup Grammar,DA15 9AG,51.4377,0.1013,Grammar,Co-ed,https://www.csgrammar.com/
+Dartford Grammar School,DA1 2HW,51.4422,0.2195,Grammar,Boys,https://www.dartfordgrammarschool.org.uk/
+Dartford Grammar for Girls,DA1 2NT,51.4445,0.2182,Grammar,Girls,https://www.dartfordgrammargirls.org.uk/
+Gravesend Grammar School,DA12 2PR,51.4368,0.3743,Grammar,Boys,https://www.gravesendgrammar.com/
+Tunbridge Wells Grammar for Boys,TN4 9XB,51.1365,0.2632,Grammar,Boys,https://www.twgsb.org.uk/
+Tunbridge Wells Girls' Grammar,TN4 9UJ,51.1342,0.2635,Grammar,Girls,https://www.twggs.kent.sch.uk/
+The Skinners' School,TN4 9PG,51.1412,0.2691,Grammar,Boys,https://www.skinners-school.co.uk/
+The Judd School,TN9 2PN,51.1924,0.2757,Grammar,Boys,https://www.judd.online/
+Colchester Royal Grammar School,CO3 3ND,51.8873,0.8916,Grammar,Boys,https://www.crgs.co.uk/
+Colchester County High School for Girls,CO4 3SQ,51.8981,0.9093,Grammar,Girls,https://www.cchsg.com/
+King Edward VI Grammar School,CM1 3SX,51.7361,0.4681,Grammar,Boys,https://www.kegs.org.uk/
+Southend High School for Boys,SS0 0RG,51.5451,0.7005,Grammar,Boys,https://www.shsb.org.uk/
+Southend High School for Girls,SS1 2RD,51.5376,0.7199,Grammar,Girls,https://www.shsg.org/
+Westcliff High School for Boys,SS0 0BP,51.5443,0.6754,Grammar,Boys,https://www.whsb.essex.sch.uk/
+Westcliff High School for Girls,SS0 0BS,51.5447,0.6760,Grammar,Girls,https://www.whsg.info/
+Wilson's School,SM6 9JW,51.3592,-0.1434,Grammar,Boys,https://www.wilsons.school/
+Wallington County Grammar,SM6 7PH,51.3579,-0.1367,Grammar,Boys,https://www.wcgs-sutton.co.uk/
+Nonsuch High School for Girls,SM3 8AB,51.3675,-0.2167,Grammar,Girls,https://www.nonsuchschool.org/
+Queen Elizabeth's School,EN5 4DQ,51.6526,-0.1945,Grammar,Boys,https://www.qebarnet.co.uk/
+Henrietta Barnett School,NW11 7BN,51.5775,-0.1891,Grammar,Girls,https://www.hbschool.org.uk/
