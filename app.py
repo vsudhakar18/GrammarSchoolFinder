@@ -1,35 +1,43 @@
 from flask import Flask, render_template, request
 import pandas as pd
-import geopy.distance
+from geopy.distance import geodesic
+from geopy.geocoders import Nominatim
 
 app = Flask(__name__)
 
-def load_schools():
-    df = pd.read_csv("data/grammar_schools.csv")
-    return df
+def get_coordinates(postcode):
+    """Get latitude and longitude for a given postcode."""
+    geolocator = Nominatim(user_agent="geoapi")
+    location = geolocator.geocode(postcode)
+    if location:
+        return (location.latitude, location.longitude)
+    return None
 
-schools_df = load_schools()
+def calculate_distances(user_postcode, schools_df):
+    """Calculate distances and return sorted school list."""
+    user_coords = get_coordinates(user_postcode)
+    if not user_coords:
+        return []
+    
+    schools_df['Distance'] = schools_df.apply(lambda row: geodesic(user_coords, (row['Latitude'], row['Longitude'])).miles, axis=1)
+    return schools_df.sort_values(by='Distance').to_dict(orient='records')
 
-def get_distance(postcode1, postcode2):
-    # Dummy function to calculate crow-fly distance (replace with real geolocation lookup)
-    return round(geopy.distance.geodesic((51.0, 0.0), (51.5, 0.5)).km, 2)
+# Load updated school data
+schools_df = pd.read_csv("grammar_schools_with_catchment.csv")
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     results = []
-    explanation = ""
+    error = None
     
     if request.method == 'POST':
-        postcode = request.form.get('postcode', '').strip().upper()
-        
+        postcode = request.form.get('postcode', '').strip()
         if postcode:
-            schools_df['Distance'] = schools_df['Postcode'].apply(lambda x: get_distance(postcode, x))
-            results = schools_df.sort_values(by='Distance').to_dict(orient='records')
-            
+            results = calculate_distances(postcode, schools_df)
             if not results:
-                explanation = "No grammar schools found for this postcode. Some schools do not have strict catchment rules."
+                error = "Invalid postcode or no schools found."
     
-    return render_template('index.html', results=results, explanation=explanation)
+    return render_template('index.html', results=results, error=error, disclaimer="Data sourced from various educational and governmental sources. Admission criteria and cut-off scores vary annually. Please refer to official school websites for the most accurate and up-to-date information.")
 
 if __name__ == '__main__':
     app.run(debug=True)
