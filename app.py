@@ -1,44 +1,35 @@
-from flask import Flask, request, render_template
+from flask import Flask, request
 import pandas as pd
-from geopy.geocoders import Nominatim
-from geopy.distance import geodesic
 
 app = Flask(__name__)
 
-# Load grammar schools data
-schools_df = pd.read_csv("grammar_schools.csv")
-
-def get_lat_lon(postcode):
-    """Get latitude and longitude of a postcode using Nominatim."""
-    geolocator = Nominatim(user_agent="geo_finder")
-    location = geolocator.geocode(postcode)
-    if location:
-        return (location.latitude, location.longitude)
-    return None
-
-def find_schools_in_catchment(user_postcode, radius_miles=10):
-    """Find grammar schools within a radius of the given postcode."""
-    user_location = get_lat_lon(user_postcode)
-    if not user_location:
-        return []
-
-    in_catchment = []
-    for _, row in schools_df.iterrows():
-        school_location = (row["Latitude"], row["Longitude"])
-        distance = geodesic(user_location, school_location).miles
-        if distance <= radius_miles:
-            in_catchment.append({"name": row["Name"], "postcode": row["Postcode"], "distance_miles": round(distance, 2)})
-
-    return in_catchment
+# Load grammar school data (Make sure grammar_schools.csv is in the same folder)
+df = pd.read_csv("grammar_schools.csv")
 
 @app.route("/", methods=["GET", "POST"])
-def index():
+def home():
     if request.method == "POST":
-        user_postcode = request.form["postcode"]
-        radius = int(request.form["radius"])
-        schools = find_schools_in_catchment(user_postcode, radius)
-        return render_template("index.html", schools=schools, postcode=user_postcode, radius=radius)
-    return render_template("index.html", schools=None)
+        user_postcode = request.form.get("postcode", "").strip()
+        radius = request.form.get("radius", "10")  # Default radius to 10 miles
+
+        # Filter the schools based on postcode (Dummy filtering logic for now)
+        schools = df[df["Postcode"].str.startswith(user_postcode[:4])]
+
+        # Read index.html and insert school data dynamically
+        with open("index.html", "r") as f:
+            html_content = f.read()
+
+        school_list = "<ul>"
+        for _, row in schools.iterrows():
+            school_list += f"<li>{row['School Name']} - {row['Postcode']}</li>"
+        school_list += "</ul>"
+
+        html_content = html_content.replace("{{SCHOOL_LIST}}", school_list)
+
+        return html_content
+
+    # Serve the index.html page
+    return open("index.html").read()
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+    app.run(debug=True)
